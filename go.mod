@@ -1,4 +1,4 @@
-module go_protos
+module github.com/zik-zikurrat/go_protos
 
 go 1.26.1
 
