@@ -1,0 +1,63 @@
+syntax = "proto3";
+// SSO - This is a service that combines 3 functions: Authorization (Auth), Working with permissions (Permissions), Providing information about the user (UserInfo)
+package auth;
+
+option go_package = "zik-zikurrat.sso.v1;ssov1";
+
+// Auth
+service Auth {
+  rpc Register (RegisterRequest) returns (RegisterResponse);
+  rpc Login (LoginRequest) returns (LoginResponse);
+  rpc IsAdmin (IsAdminRequest) returns (IsAdminResponse);
+  rpc IsDemo(IsDemoRequest) returns (IsDemoResponse);
+}
+
+
+// ServiceRegistry
+service ServiceRegistry{
+    rpc RegisterService(RegisterServiceRequest) returns (RegisterServiceResponse);
+}
+
+message RegisterRequest{
+  string login    = 1;
+  string email    = 2;
+  string password = 3;
+}
+
+message RegisterServiceRequest{
+    string name = 1;
+    map<string, string> metadata = 2;
+}
+
+message RegisterServiceResponse{
+    int64 service_id = 1;
+}
+
+message RegisterResponse {
+  int64 user_id = 1;
+}
+
+message LoginRequest {
+  string email    = 1;
+  string password = 2;
+  int32  app_id   = 3;
+}
+
+message LoginResponse {
+  string token = 1;
+}
+
+message IsAdminRequest {
+  int64 user_id = 1;
+}
+message IsDemoRequest {
+  int64 user_id = 1;
+}
+
+message IsAdminResponse {
+  bool is_admin = 1;
+}
+
+message IsDemoResponse {
+  bool is_demo = 1;
+}

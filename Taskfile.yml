@@ -1,0 +1,9 @@
+version: "3"
+
+# task generate MODULE=sso
+tasks:
+  generate:
+    dir: "{{.TASKFILE_DIR}}"
+    cmds:
+      - mkdir -p protos/gen/go
+      - find protos/proto/{{.MODULE}} -name "*.proto" -exec protoc -I protos/proto {} --go_out=./protos/gen/go/ --go_opt=paths=source_relative --go-grpc_out=./protos/gen/go/ --go-grpc_opt=paths=source_relative \;
