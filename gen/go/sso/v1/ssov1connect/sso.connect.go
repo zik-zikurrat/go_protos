@@ -2,7 +2,6 @@
 //
 // Source: sso/v1/sso.proto
 
-// SSO - This is a service that combines 3 functions: Authorization (Auth), Working with permissions (Permissions), Providing information about the user (UserInfo)
 package ssov1connect
 
 import (
@@ -51,10 +50,10 @@ const (
 
 // AuthServiceClient is a client for the sso.v1.AuthService service.
 type AuthServiceClient interface {
-	Register(context.Context, *v1.RegisterRequest) (*v1.RegisterResponse, error)
-	Login(context.Context, *v1.LoginRequest) (*v1.LoginResponse, error)
-	IsAdmin(context.Context, *v1.IsAdminRequest) (*v1.IsAdminResponse, error)
-	IsDemo(context.Context, *v1.IsDemoRequest) (*v1.IsDemoResponse, error)
+	Register(context.Context, *connect.Request[v1.RegisterRequest]) (*connect.Response[v1.RegisterResponse], error)
+	Login(context.Context, *connect.Request[v1.LoginRequest]) (*connect.Response[v1.LoginResponse], error)
+	IsAdmin(context.Context, *connect.Request[v1.IsAdminRequest]) (*connect.Response[v1.IsAdminResponse], error)
+	IsDemo(context.Context, *connect.Request[v1.IsDemoRequest]) (*connect.Response[v1.IsDemoResponse], error)
 }
 
 // NewAuthServiceClient constructs a client for the sso.v1.AuthService service. By default, it uses
@@ -104,47 +103,31 @@ type authServiceClient struct {
 }
 
 // Register calls sso.v1.AuthService.Register.
-func (c *authServiceClient) Register(ctx context.Context, req *v1.RegisterRequest) (*v1.RegisterResponse, error) {
-	response, err := c.register.CallUnary(ctx, connect.NewRequest(req))
-	if response != nil {
-		return response.Msg, err
-	}
-	return nil, err
+func (c *authServiceClient) Register(ctx context.Context, req *connect.Request[v1.RegisterRequest]) (*connect.Response[v1.RegisterResponse], error) {
+	return c.register.CallUnary(ctx, req)
 }
 
 // Login calls sso.v1.AuthService.Login.
-func (c *authServiceClient) Login(ctx context.Context, req *v1.LoginRequest) (*v1.LoginResponse, error) {
-	response, err := c.login.CallUnary(ctx, connect.NewRequest(req))
-	if response != nil {
-		return response.Msg, err
-	}
-	return nil, err
+func (c *authServiceClient) Login(ctx context.Context, req *connect.Request[v1.LoginRequest]) (*connect.Response[v1.LoginResponse], error) {
+	return c.login.CallUnary(ctx, req)
 }
 
 // IsAdmin calls sso.v1.AuthService.IsAdmin.
-func (c *authServiceClient) IsAdmin(ctx context.Context, req *v1.IsAdminRequest) (*v1.IsAdminResponse, error) {
-	response, err := c.isAdmin.CallUnary(ctx, connect.NewRequest(req))
-	if response != nil {
-		return response.Msg, err
-	}
-	return nil, err
+func (c *authServiceClient) IsAdmin(ctx context.Context, req *connect.Request[v1.IsAdminRequest]) (*connect.Response[v1.IsAdminResponse], error) {
+	return c.isAdmin.CallUnary(ctx, req)
 }
 
 // IsDemo calls sso.v1.AuthService.IsDemo.
-func (c *authServiceClient) IsDemo(ctx context.Context, req *v1.IsDemoRequest) (*v1.IsDemoResponse, error) {
-	response, err := c.isDemo.CallUnary(ctx, connect.NewRequest(req))
-	if response != nil {
-		return response.Msg, err
-	}
-	return nil, err
+func (c *authServiceClient) IsDemo(ctx context.Context, req *connect.Request[v1.IsDemoRequest]) (*connect.Response[v1.IsDemoResponse], error) {
+	return c.isDemo.CallUnary(ctx, req)
 }
 
 // AuthServiceHandler is an implementation of the sso.v1.AuthService service.
 type AuthServiceHandler interface {
-	Register(context.Context, *v1.RegisterRequest) (*v1.RegisterResponse, error)
-	Login(context.Context, *v1.LoginRequest) (*v1.LoginResponse, error)
-	IsAdmin(context.Context, *v1.IsAdminRequest) (*v1.IsAdminResponse, error)
-	IsDemo(context.Context, *v1.IsDemoRequest) (*v1.IsDemoResponse, error)
+	Register(context.Context, *connect.Request[v1.RegisterRequest]) (*connect.Response[v1.RegisterResponse], error)
+	Login(context.Context, *connect.Request[v1.LoginRequest]) (*connect.Response[v1.LoginResponse], error)
+	IsAdmin(context.Context, *connect.Request[v1.IsAdminRequest]) (*connect.Response[v1.IsAdminResponse], error)
+	IsDemo(context.Context, *connect.Request[v1.IsDemoRequest]) (*connect.Response[v1.IsDemoResponse], error)
 }
 
 // NewAuthServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -154,25 +137,25 @@ type AuthServiceHandler interface {
 // and JSON codecs. They also support gzip compression.
 func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
 	authServiceMethods := v1.File_sso_v1_sso_proto.Services().ByName("AuthService").Methods()
-	authServiceRegisterHandler := connect.NewUnaryHandlerSimple(
+	authServiceRegisterHandler := connect.NewUnaryHandler(
 		AuthServiceRegisterProcedure,
 		svc.Register,
 		connect.WithSchema(authServiceMethods.ByName("Register")),
 		connect.WithHandlerOptions(opts...),
 	)
-	authServiceLoginHandler := connect.NewUnaryHandlerSimple(
+	authServiceLoginHandler := connect.NewUnaryHandler(
 		AuthServiceLoginProcedure,
 		svc.Login,
 		connect.WithSchema(authServiceMethods.ByName("Login")),
 		connect.WithHandlerOptions(opts...),
 	)
-	authServiceIsAdminHandler := connect.NewUnaryHandlerSimple(
+	authServiceIsAdminHandler := connect.NewUnaryHandler(
 		AuthServiceIsAdminProcedure,
 		svc.IsAdmin,
 		connect.WithSchema(authServiceMethods.ByName("IsAdmin")),
 		connect.WithHandlerOptions(opts...),
 	)
-	authServiceIsDemoHandler := connect.NewUnaryHandlerSimple(
+	authServiceIsDemoHandler := connect.NewUnaryHandler(
 		AuthServiceIsDemoProcedure,
 		svc.IsDemo,
 		connect.WithSchema(authServiceMethods.ByName("IsDemo")),
@@ -197,25 +180,25 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 // UnimplementedAuthServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedAuthServiceHandler struct{}
 
-func (UnimplementedAuthServiceHandler) Register(context.Context, *v1.RegisterRequest) (*v1.RegisterResponse, error) {
+func (UnimplementedAuthServiceHandler) Register(context.Context, *connect.Request[v1.RegisterRequest]) (*connect.Response[v1.RegisterResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sso.v1.AuthService.Register is not implemented"))
 }
 
-func (UnimplementedAuthServiceHandler) Login(context.Context, *v1.LoginRequest) (*v1.LoginResponse, error) {
+func (UnimplementedAuthServiceHandler) Login(context.Context, *connect.Request[v1.LoginRequest]) (*connect.Response[v1.LoginResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sso.v1.AuthService.Login is not implemented"))
 }
 
-func (UnimplementedAuthServiceHandler) IsAdmin(context.Context, *v1.IsAdminRequest) (*v1.IsAdminResponse, error) {
+func (UnimplementedAuthServiceHandler) IsAdmin(context.Context, *connect.Request[v1.IsAdminRequest]) (*connect.Response[v1.IsAdminResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sso.v1.AuthService.IsAdmin is not implemented"))
 }
 
-func (UnimplementedAuthServiceHandler) IsDemo(context.Context, *v1.IsDemoRequest) (*v1.IsDemoResponse, error) {
+func (UnimplementedAuthServiceHandler) IsDemo(context.Context, *connect.Request[v1.IsDemoRequest]) (*connect.Response[v1.IsDemoResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sso.v1.AuthService.IsDemo is not implemented"))
 }
 
 // RegistryServiceClient is a client for the sso.v1.RegistryService service.
 type RegistryServiceClient interface {
-	RegisterService(context.Context, *v1.RegisterServiceRequest) (*v1.RegisterServiceResponse, error)
+	RegisterService(context.Context, *connect.Request[v1.RegisterServiceRequest]) (*connect.Response[v1.RegisterServiceResponse], error)
 }
 
 // NewRegistryServiceClient constructs a client for the sso.v1.RegistryService service. By default,
@@ -244,17 +227,13 @@ type registryServiceClient struct {
 }
 
 // RegisterService calls sso.v1.RegistryService.RegisterService.
-func (c *registryServiceClient) RegisterService(ctx context.Context, req *v1.RegisterServiceRequest) (*v1.RegisterServiceResponse, error) {
-	response, err := c.registerService.CallUnary(ctx, connect.NewRequest(req))
-	if response != nil {
-		return response.Msg, err
-	}
-	return nil, err
+func (c *registryServiceClient) RegisterService(ctx context.Context, req *connect.Request[v1.RegisterServiceRequest]) (*connect.Response[v1.RegisterServiceResponse], error) {
+	return c.registerService.CallUnary(ctx, req)
 }
 
 // RegistryServiceHandler is an implementation of the sso.v1.RegistryService service.
 type RegistryServiceHandler interface {
-	RegisterService(context.Context, *v1.RegisterServiceRequest) (*v1.RegisterServiceResponse, error)
+	RegisterService(context.Context, *connect.Request[v1.RegisterServiceRequest]) (*connect.Response[v1.RegisterServiceResponse], error)
 }
 
 // NewRegistryServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -264,7 +243,7 @@ type RegistryServiceHandler interface {
 // and JSON codecs. They also support gzip compression.
 func NewRegistryServiceHandler(svc RegistryServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
 	registryServiceMethods := v1.File_sso_v1_sso_proto.Services().ByName("RegistryService").Methods()
-	registryServiceRegisterServiceHandler := connect.NewUnaryHandlerSimple(
+	registryServiceRegisterServiceHandler := connect.NewUnaryHandler(
 		RegistryServiceRegisterServiceProcedure,
 		svc.RegisterService,
 		connect.WithSchema(registryServiceMethods.ByName("RegisterService")),
@@ -283,6 +262,6 @@ func NewRegistryServiceHandler(svc RegistryServiceHandler, opts ...connect.Handl
 // UnimplementedRegistryServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedRegistryServiceHandler struct{}
 
-func (UnimplementedRegistryServiceHandler) RegisterService(context.Context, *v1.RegisterServiceRequest) (*v1.RegisterServiceResponse, error) {
+func (UnimplementedRegistryServiceHandler) RegisterService(context.Context, *connect.Request[v1.RegisterServiceRequest]) (*connect.Response[v1.RegisterServiceResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sso.v1.RegistryService.RegisterService is not implemented"))
 }
