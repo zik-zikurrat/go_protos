@@ -1,11 +1,11 @@
 syntax = "proto3";
 // SSO - This is a service that combines 3 functions: Authorization (Auth), Working with permissions (Permissions), Providing information about the user (UserInfo)
-package auth;
+package sso.v1;
 
-option go_package = "github.com/zik-zikurrat/go_protos/protos/gen/go/sso;ssov1";
+option go_package = "github.com/zik-zikurrat/go_protos/protos/gen/go/sso/v1;ssov1";
 
 // Auth
-service Auth {
+service AuthService {
   rpc Register (RegisterRequest) returns (RegisterResponse);
   rpc Login (LoginRequest) returns (LoginResponse);
   rpc IsAdmin (IsAdminRequest) returns (IsAdminResponse);
@@ -13,8 +13,8 @@ service Auth {
 }
 
 
-// ServiceRegistry
-service ServiceRegistry{
+// RegistryService
+service RegistryService{
     rpc RegisterService(RegisterServiceRequest) returns (RegisterServiceResponse);
 }
 
