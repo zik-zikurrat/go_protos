@@ -25,7 +25,7 @@ message RegisterServiceRequest{
 }
 
 message RegisterServiceResponse{
-    string service_id = 1;
+    string msg = 1;
 }
 
 message RegisterResponse {

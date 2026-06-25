@@ -135,7 +135,7 @@ func (x *RegisterServiceRequest) GetMetadata() map[string]string {
 
 type RegisterServiceResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ServiceId     string                 `protobuf:"bytes,1,opt,name=service_id,json=serviceId,proto3" json:"service_id,omitempty"`
+	Msg           string                 `protobuf:"bytes,1,opt,name=msg,proto3" json:"msg,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -170,9 +170,9 @@ func (*RegisterServiceResponse) Descriptor() ([]byte, []int) {
 	return file_sso_v1_sso_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *RegisterServiceResponse) GetServiceId() string {
+func (x *RegisterServiceResponse) GetMsg() string {
 	if x != nil {
-		return x.ServiceId
+		return x.Msg
 	}
 	return ""
 }
@@ -515,10 +515,9 @@ const file_sso_v1_sso_proto_rawDesc = "" +
 	"\bmetadata\x18\x02 \x03(\v2,.sso.v1.RegisterServiceRequest.MetadataEntryR\bmetadata\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"8\n" +
-	"\x17RegisterServiceResponse\x12\x1d\n" +
-	"\n" +
-	"service_id\x18\x01 \x01(\tR\tserviceId\"+\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"+\n" +
+	"\x17RegisterServiceResponse\x12\x10\n" +
+	"\x03msg\x18\x01 \x01(\tR\x03msg\"+\n" +
 	"\x10RegisterResponse\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\"W\n" +
 	"\fLoginRequest\x12\x14\n" +
