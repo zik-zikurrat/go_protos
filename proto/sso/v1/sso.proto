@@ -19,13 +19,19 @@ message RegisterRequest{
   string password = 3;
 }
 
-message RegisterServiceRequest{
-    string name = 1;
-    map<string, string> metadata = 2;
+message Endpoint {
+  string method = 1;
+  string path   = 2;
+}
+
+message RegisterServiceRequest {
+  string              name      = 1;
+  map<string, string> metadata  = 2;
+  repeated Endpoint   endpoints = 3;
 }
 
 message RegisterServiceResponse{
-    string msg = 1;
+  string msg = 1;
 }
 
 message RegisterResponse {
@@ -35,7 +41,7 @@ message RegisterResponse {
 message LoginRequest {
   string email    = 1;
   string password = 2;
-  string  app_id   = 3;
+  string app_id   = 3;
 }
 
 message LoginResponse {
@@ -45,6 +51,7 @@ message LoginResponse {
 message IsAdminRequest {
   string user_id = 1;
 }
+
 message IsDemoRequest {
   string user_id = 1;
 }
