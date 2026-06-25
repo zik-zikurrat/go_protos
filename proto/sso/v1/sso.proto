@@ -22,12 +22,12 @@ message RegisterRequest{
 message Endpoint {
   string method = 1;
   string path   = 2;
+  bool   secure = 3;
 }
 
 message RegisterServiceRequest {
-  string              name      = 1;
-  map<string, string> metadata  = 2;
-  repeated Endpoint   endpoints = 3;
+  string            name      = 1;
+  repeated Endpoint endpoints = 2;
 }
 
 message RegisterServiceResponse{

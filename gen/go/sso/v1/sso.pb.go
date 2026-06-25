@@ -85,6 +85,7 @@ type Endpoint struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Method        string                 `protobuf:"bytes,1,opt,name=method,proto3" json:"method,omitempty"`
 	Path          string                 `protobuf:"bytes,2,opt,name=path,proto3" json:"path,omitempty"`
+	Secure        bool                   `protobuf:"varint,3,opt,name=secure,proto3" json:"secure,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -133,11 +134,17 @@ func (x *Endpoint) GetPath() string {
 	return ""
 }
 
+func (x *Endpoint) GetSecure() bool {
+	if x != nil {
+		return x.Secure
+	}
+	return false
+}
+
 type RegisterServiceRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Metadata      map[string]string      `protobuf:"bytes,2,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	Endpoints     []*Endpoint            `protobuf:"bytes,3,rep,name=endpoints,proto3" json:"endpoints,omitempty"`
+	Endpoints     []*Endpoint            `protobuf:"bytes,2,rep,name=endpoints,proto3" json:"endpoints,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -177,13 +184,6 @@ func (x *RegisterServiceRequest) GetName() string {
 		return x.Name
 	}
 	return ""
-}
-
-func (x *RegisterServiceRequest) GetMetadata() map[string]string {
-	if x != nil {
-		return x.Metadata
-	}
-	return nil
 }
 
 func (x *RegisterServiceRequest) GetEndpoints() []*Endpoint {
@@ -569,17 +569,14 @@ const file_sso_v1_sso_proto_rawDesc = "" +
 	"\x0fRegisterRequest\x12\x14\n" +
 	"\x05login\x18\x01 \x01(\tR\x05login\x12\x14\n" +
 	"\x05email\x18\x02 \x01(\tR\x05email\x12\x1a\n" +
-	"\bpassword\x18\x03 \x01(\tR\bpassword\"6\n" +
+	"\bpassword\x18\x03 \x01(\tR\bpassword\"N\n" +
 	"\bEndpoint\x12\x16\n" +
 	"\x06method\x18\x01 \x01(\tR\x06method\x12\x12\n" +
-	"\x04path\x18\x02 \x01(\tR\x04path\"\xe3\x01\n" +
+	"\x04path\x18\x02 \x01(\tR\x04path\x12\x16\n" +
+	"\x06secure\x18\x03 \x01(\bR\x06secure\"\\\n" +
 	"\x16RegisterServiceRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12H\n" +
-	"\bmetadata\x18\x02 \x03(\v2,.sso.v1.RegisterServiceRequest.MetadataEntryR\bmetadata\x12.\n" +
-	"\tendpoints\x18\x03 \x03(\v2\x10.sso.v1.EndpointR\tendpoints\x1a;\n" +
-	"\rMetadataEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"+\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12.\n" +
+	"\tendpoints\x18\x02 \x03(\v2\x10.sso.v1.EndpointR\tendpoints\"+\n" +
 	"\x17RegisterServiceResponse\x12\x10\n" +
 	"\x03msg\x18\x01 \x01(\tR\x03msg\"+\n" +
 	"\x10RegisterResponse\x12\x17\n" +
@@ -620,7 +617,7 @@ func file_sso_v1_sso_proto_rawDescGZIP() []byte {
 	return file_sso_v1_sso_proto_rawDescData
 }
 
-var file_sso_v1_sso_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_sso_v1_sso_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_sso_v1_sso_proto_goTypes = []any{
 	(*RegisterRequest)(nil),         // 0: sso.v1.RegisterRequest
 	(*Endpoint)(nil),                // 1: sso.v1.Endpoint
@@ -633,26 +630,24 @@ var file_sso_v1_sso_proto_goTypes = []any{
 	(*IsDemoRequest)(nil),           // 8: sso.v1.IsDemoRequest
 	(*IsAdminResponse)(nil),         // 9: sso.v1.IsAdminResponse
 	(*IsDemoResponse)(nil),          // 10: sso.v1.IsDemoResponse
-	nil,                             // 11: sso.v1.RegisterServiceRequest.MetadataEntry
 }
 var file_sso_v1_sso_proto_depIdxs = []int32{
-	11, // 0: sso.v1.RegisterServiceRequest.metadata:type_name -> sso.v1.RegisterServiceRequest.MetadataEntry
-	1,  // 1: sso.v1.RegisterServiceRequest.endpoints:type_name -> sso.v1.Endpoint
-	0,  // 2: sso.v1.AuthService.Register:input_type -> sso.v1.RegisterRequest
-	5,  // 3: sso.v1.AuthService.Login:input_type -> sso.v1.LoginRequest
-	7,  // 4: sso.v1.AuthService.IsAdmin:input_type -> sso.v1.IsAdminRequest
-	8,  // 5: sso.v1.AuthService.IsDemo:input_type -> sso.v1.IsDemoRequest
-	2,  // 6: sso.v1.RegistryService.RegisterService:input_type -> sso.v1.RegisterServiceRequest
-	4,  // 7: sso.v1.AuthService.Register:output_type -> sso.v1.RegisterResponse
-	6,  // 8: sso.v1.AuthService.Login:output_type -> sso.v1.LoginResponse
-	9,  // 9: sso.v1.AuthService.IsAdmin:output_type -> sso.v1.IsAdminResponse
-	10, // 10: sso.v1.AuthService.IsDemo:output_type -> sso.v1.IsDemoResponse
-	3,  // 11: sso.v1.RegistryService.RegisterService:output_type -> sso.v1.RegisterServiceResponse
-	7,  // [7:12] is the sub-list for method output_type
-	2,  // [2:7] is the sub-list for method input_type
-	2,  // [2:2] is the sub-list for extension type_name
-	2,  // [2:2] is the sub-list for extension extendee
-	0,  // [0:2] is the sub-list for field type_name
+	1,  // 0: sso.v1.RegisterServiceRequest.endpoints:type_name -> sso.v1.Endpoint
+	0,  // 1: sso.v1.AuthService.Register:input_type -> sso.v1.RegisterRequest
+	5,  // 2: sso.v1.AuthService.Login:input_type -> sso.v1.LoginRequest
+	7,  // 3: sso.v1.AuthService.IsAdmin:input_type -> sso.v1.IsAdminRequest
+	8,  // 4: sso.v1.AuthService.IsDemo:input_type -> sso.v1.IsDemoRequest
+	2,  // 5: sso.v1.RegistryService.RegisterService:input_type -> sso.v1.RegisterServiceRequest
+	4,  // 6: sso.v1.AuthService.Register:output_type -> sso.v1.RegisterResponse
+	6,  // 7: sso.v1.AuthService.Login:output_type -> sso.v1.LoginResponse
+	9,  // 8: sso.v1.AuthService.IsAdmin:output_type -> sso.v1.IsAdminResponse
+	10, // 9: sso.v1.AuthService.IsDemo:output_type -> sso.v1.IsDemoResponse
+	3,  // 10: sso.v1.RegistryService.RegisterService:output_type -> sso.v1.RegisterServiceResponse
+	6,  // [6:11] is the sub-list for method output_type
+	1,  // [1:6] is the sub-list for method input_type
+	1,  // [1:1] is the sub-list for extension type_name
+	1,  // [1:1] is the sub-list for extension extendee
+	0,  // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_sso_v1_sso_proto_init() }
@@ -666,7 +661,7 @@ func file_sso_v1_sso_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_sso_v1_sso_proto_rawDesc), len(file_sso_v1_sso_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   12,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   2,
 		},
