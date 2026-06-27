@@ -21,7 +21,7 @@ message RegisterRequest{
 
 message Endpoint {
   string method = 1;
-  string path   = 2;
+  string url   = 2;
   bool   secure = 3;
 }
 
@@ -31,7 +31,7 @@ message RegisterServiceRequest {
 }
 
 message RegisterServiceResponse{
-  string msg = 1;
+  string service_id = 1;
 }
 
 message RegisterResponse {

@@ -84,7 +84,7 @@ func (x *RegisterRequest) GetPassword() string {
 type Endpoint struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Method        string                 `protobuf:"bytes,1,opt,name=method,proto3" json:"method,omitempty"`
-	Path          string                 `protobuf:"bytes,2,opt,name=path,proto3" json:"path,omitempty"`
+	Url           string                 `protobuf:"bytes,2,opt,name=url,proto3" json:"url,omitempty"`
 	Secure        bool                   `protobuf:"varint,3,opt,name=secure,proto3" json:"secure,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -127,9 +127,9 @@ func (x *Endpoint) GetMethod() string {
 	return ""
 }
 
-func (x *Endpoint) GetPath() string {
+func (x *Endpoint) GetUrl() string {
 	if x != nil {
-		return x.Path
+		return x.Url
 	}
 	return ""
 }
@@ -195,7 +195,7 @@ func (x *RegisterServiceRequest) GetEndpoints() []*Endpoint {
 
 type RegisterServiceResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Msg           string                 `protobuf:"bytes,1,opt,name=msg,proto3" json:"msg,omitempty"`
+	ServiceId     string                 `protobuf:"bytes,1,opt,name=service_id,json=serviceId,proto3" json:"service_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -230,9 +230,9 @@ func (*RegisterServiceResponse) Descriptor() ([]byte, []int) {
 	return file_sso_v1_sso_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *RegisterServiceResponse) GetMsg() string {
+func (x *RegisterServiceResponse) GetServiceId() string {
 	if x != nil {
-		return x.Msg
+		return x.ServiceId
 	}
 	return ""
 }
@@ -569,16 +569,17 @@ const file_sso_v1_sso_proto_rawDesc = "" +
 	"\x0fRegisterRequest\x12\x14\n" +
 	"\x05login\x18\x01 \x01(\tR\x05login\x12\x14\n" +
 	"\x05email\x18\x02 \x01(\tR\x05email\x12\x1a\n" +
-	"\bpassword\x18\x03 \x01(\tR\bpassword\"N\n" +
+	"\bpassword\x18\x03 \x01(\tR\bpassword\"L\n" +
 	"\bEndpoint\x12\x16\n" +
-	"\x06method\x18\x01 \x01(\tR\x06method\x12\x12\n" +
-	"\x04path\x18\x02 \x01(\tR\x04path\x12\x16\n" +
+	"\x06method\x18\x01 \x01(\tR\x06method\x12\x10\n" +
+	"\x03url\x18\x02 \x01(\tR\x03url\x12\x16\n" +
 	"\x06secure\x18\x03 \x01(\bR\x06secure\"\\\n" +
 	"\x16RegisterServiceRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12.\n" +
-	"\tendpoints\x18\x02 \x03(\v2\x10.sso.v1.EndpointR\tendpoints\"+\n" +
-	"\x17RegisterServiceResponse\x12\x10\n" +
-	"\x03msg\x18\x01 \x01(\tR\x03msg\"+\n" +
+	"\tendpoints\x18\x02 \x03(\v2\x10.sso.v1.EndpointR\tendpoints\"8\n" +
+	"\x17RegisterServiceResponse\x12\x1d\n" +
+	"\n" +
+	"service_id\x18\x01 \x01(\tR\tserviceId\"+\n" +
 	"\x10RegisterResponse\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\"W\n" +
 	"\fLoginRequest\x12\x14\n" +
